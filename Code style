@@ -1,0 +1,46 @@
+AXISengine Pre-Alpha Tag Reference
+AXISengine uses a clean, plugin-style syntax to make scripting powerful and readable. Here are the main tags, directives, and modifiers you can use in .axi scripts right now:
+Displaying Text
+:show;() – Displays text to the console or log.
+Place your message inside the parentheses.
+:show;("Welcome to AXISengine!")
+ Webview / Embedded Browser
+Use the webview tag to open web pages directly in your scripts. You can customize the window with optional modifiers.
+webview::hook-url(url, callback) – Opens a URL and optionally runs a callback when the page loads.
++dimensions(width * height) – Set the window size.
++position(x * y) – Optional: set window position on screen (planned).
++fullscreen – Optional: launch in full screen (planned).
++headless – Optional: fetch content without showing GUI (planned).
++resizable – Optional: make the window resizable (planned).
+Example:
+webview::hook-url("https://example.com", handle_page) +dimensions(1024 * 768) +resizable :show;
+Plugins & Hooks
+Plugins allow you to extend AXISengine with custom hooks and behavior.
+plugin "Name": – Define a plugin block with a name.
+def hook_name(args): – Define a function that runs when the hook is triggered.
+register_hook(name, func) – Register a function to a hook (inside plugin system).
+trigger_hook(name, args) – Manually trigger a hook with arguments.
+Example:
+plugin "FileLogger":
+    version = "1.0"
+
+    def on_save(file):
+        :show;("File saved: " + file.name)
+Modules / Libraries
+AXISengine lets you inject built-in modules to expand functionality.
+example:
+inject {"utils"}
+inject {"webview"}
+Modules provide functionality like math operations, file handling, random numbers, and more.
+Variables & Expressions
+AXISengine supports standard variable assignment, math, and string operations:
+example:
+x = 10
+message = "Hello " + "World"
+result = sqrt(16) + pow(2, 3)
+num = randint(1, 100)
+!!::Notes::!!
+Tags that modify behavior start with + (e.g., +dimensions()).
+Tags that execute actions with webview::hook-url().
+are most in development and still dont work.
+Everything else works like standard variables and expressions.
